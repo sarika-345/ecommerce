@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+
+<div class="container-fluid">
+    <div class="row">
+<div class="col-md-4">
+    <img src="{{b.image.url}}" style="float:left;margin:50px; height:400px;width:100%;">
+</div>
+<div class="col-md-7" style="padding-left:150px;padding-top:35px;">
+    <div class="card-body">
+    <h3 class="card-title">{{b.name}}</h3>
+        <p class="card-text">{{b.price}}</p>
+        <h3 class="card-text">Product Description</h3>
+    <p class="card-text">{{b.description}}</p>
+        {% if user.username != 'admin' %}
+        {% if b.stock <= 0 %}
+        <h4>Out of Stock</h4>
+        {% else %}
+    <a href="{% url 'cart:add_to_cart' b.id %}" style="position:relative;left:38%" class="btn btn-primary">Add to Cart</a>
+        {% endif %}
+        {% else %}
+            {% if p.stock <= 0 %}
+                <h4>Out Of Stock</h4>
+                <a href="{% url 'admin:index' %}">ADD STOCK</a>
+            {% endif %}
+        {% endif %}
+</div>
+    </div>
+</div>
+</div>
+
+
+{% endblock %}

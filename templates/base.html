@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script crossorigin="anonymous"
+            integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+            src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+    <link crossorigin="anonymous" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" rel="stylesheet">
+    <link href="{% static 'css/custom.css' %}" rel="stylesheet">
+    <link href="https://fonts.googleapis.com" rel="preconnect">
+    <link crossorigin href="https://fonts.gstatic.com" rel="preconnect">
+    <link crossorigin="anonymous" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+          integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
+          referrerpolicy="no-referrer" rel="stylesheet"/>
+</head>
+<body class="pink">
+<div class="container-fluid">
+    <header>
+        <center>
+            <img height="100px" src="{% static 'images/logo3.jpg' %}" width="100px">
+        </center>
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="#">MyShop</a>
+                <button aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"
+                        class="navbar-toggler" data-bs-target="#navbarSupportedContent"
+                        data-bs-toggle="collapse" type="button">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <a aria-current="page" class="nav-link active" href="{% url 'shop:allprodcat' %}">Home</a>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a aria-expanded="false" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#"
+                               id="navbarDropdown" role="button">
+                                Shop
+                            </a>
+                            <ul aria-labelledby="navbarDropdown" class="dropdown-menu">
+                                <li><a class="dropdown-item" href="#">All Categories</a></li>
+                                <li>
+                                    <hr class="dropdown-divider">
+                                </li>
+                                {% for i in links %}
+                                <li><a class="dropdown-item" href="{% url 'shop:allproducts' i.slug %}">{{i.name}}</a>
+                                </li>
+                                {% endfor %}
+                            </ul>
+                            {% if user.is_authenticated %}
+                            {% if user.username != 'admin' %}
+                        </li>
+                        <li class="nav-item">
+                            <a aria-current="page" class="nav-link active" href="{% url 'cart:cartview' %}"><i
+                                    class="fa-solid fa-cart-shopping"></i>{{count}}</a>
+                        </li>
+                        </li>
+                        <li class="nav-item">
+                            <a aria-current="page" class="nav-link active" href="{% url 'cart:orderview' %}">Your
+                                Orders</a>
+                        </li>
+                        </li>
+                        {% endif %}
+                        <li class="nav-item">
+                            <a aria-current="page" class="nav-link active" href="{% url 'shop:logout' %}">Logout</a>
+                        </li>
+                        {% else %}
+                        <li class="nav-item">
+                            <a aria-current="page" class="nav-link active" href="{% url 'shop:register' %}">Register</a>
+                        </li>
+                        <li class="nav-item">
+                            <a aria-current="page" class="nav-link active" href="{% url 'shop:login' %}">Login</a>
+                        </li>
+                        {% endif %}
+
+                    </ul>
+                    <form action="{% url 'search:searchresults' %}" class="d-flex" method="POST">
+                        {% csrf_token %}
+                        <input aria-label="Search" class="form-control me-2" name="q" placeholder="Search"
+                               type="search">
+                        <button class="btn btn-outline-success" type="submit">Search</button>
+                    </form>
+                </div>
+            </div>
+        </nav>
+    </header>
+</div>
+{% block content %}
+{% endblock %}
+<footer class="footer">
+    <div>
+        <p>
+        <center><i class="fa-solid fa-copyright icon_size" style="font-size:12px">My Shop pvt ltd.All Rights
+            Reserved</i></center>
+        </p>
+    </div>
+</footer>
+</body>
+</html>
